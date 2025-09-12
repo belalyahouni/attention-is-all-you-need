@@ -81,3 +81,17 @@ tgt_seq_len = calculate_seq_len(train_de + val_de + test_de, bpe_tokenizer)  # G
 
 src_seq_len = 350
 tgt_seq_len = 350
+
+# NEW: Create a function to handle all the data loading
+def load_and_prepare_data():
+    print("--- Loading and preparing datasets (this should only run once) ---")
+    
+    # (All the previous file reading logic is now inside this function)
+    train_en, train_de = read_lines("datasets/train.en", "datasets/train.de")
+    val_en, val_de = read_lines("datasets/validation.en", "datasets/validation.de")
+    
+    print("Line counts after reading:")
+    print("  Train EN:", len(train_en), " Train DE:", len(train_de))
+    print("  Val   EN:", len(val_en),  " Val   DE:", len(val_de))
+
+    return train_en, train_de, val_en, val_de

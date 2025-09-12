@@ -26,7 +26,7 @@ tgt_seq_len = 350    # target max length used in training
 transformer = build_transformer(vocab_size, vocab_size, src_seq_len, tgt_seq_len)
 
 # Load latest checkpoint
-checkpoint_path = "checkpoints/step_10.pt"  # change if needed
+checkpoint_path = "checkpoints/step_90000.pt"  # change if needed
 transformer.load_state_dict(torch.load(checkpoint_path, map_location=device))
 transformer.to(device)
 transformer.eval()

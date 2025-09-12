@@ -49,16 +49,24 @@ train_dataset = BilingualDataset(train_en, train_de, bpe_tokenizer, src_seq_len,
 val_dataset = BilingualDataset(val_en, val_de, bpe_tokenizer, src_seq_len, tgt_seq_len)
 
 print("Loaded BilingualDatasets")
-train_loader = DataLoader(train_dataset, batch_size=25000, shuffle=True)  # batch=1 because each sample ~25k tokens
-val_loader = DataLoader(val_dataset, batch_size=25000)
+train_loader = DataLoader(train_dataset, batch_size=100, shuffle=True)  # batch=1 because each sample ~25k tokens
+val_loader = DataLoader(val_dataset, batch_size=100)
 print("Loaded DataLoaded")
 vocab_size = bpe_tokenizer.vocab_size
+
 transformer = build_transformer(vocab_size, vocab_size, src_seq_len, tgt_seq_len)
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# Wrap with DataParallel
+if torch.cuda.device_count() > 1:
+    print(f"Using {torch.cuda.device_count()} GPUs")
+    transformer = nn.DataParallel(transformer)
+
+transformer.to(device)
 transformer.to(device)
 print("Built Transformer")
 d_model = 512
-warmup_steps = 400
+warmup_steps = 500
 
 optimizer = torch.optim.Adam(transformer.parameters(), betas=(0.9, 0.98), eps=1e-9)
 
@@ -110,9 +118,9 @@ while step < num_steps:
         label = batch['label'].to(device)
 
         # Forward
-        enc_out = transformer.encode(encoder_input, encoder_mask)
-        dec_out = transformer.decode(enc_out, encoder_mask, decoder_input, decoder_mask)
-        logits = transformer.projection(dec_out)
+        enc_out = transformer.module.encode(encoder_input, encoder_mask)
+        dec_out = transformer.module.decode(enc_out, encoder_mask, decoder_input, decoder_mask)
+        logits = transformer.module.projection(dec_out)
 
         # Compute loss
         loss = criterion(logits, label)

@@ -18,7 +18,7 @@ train_pairs = [
 ]
 
 # Limit to 4.5M
-train_pairs = train_pairs[:1000]
+train_pairs = train_pairs[:4500000]
 
 # Now split
 train_en, train_de = zip(*train_pairs)

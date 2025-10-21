@@ -26,7 +26,7 @@ tgt_seq_len = 350
 transformer = build_transformer(vocab_size, vocab_size, src_seq_len, tgt_seq_len)
 
 # Load latest checkpoint
-checkpoint_path = "checkpoints/step_6000.pt" # Update with your final checkpoint
+checkpoint_path = "checkpoints/step_100000.pt" # Update with your final checkpoint
 print(f"Loading model from {checkpoint_path}...")
 transformer.load_state_dict(torch.load(checkpoint_path, map_location=device))
 transformer.to(device)

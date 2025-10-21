@@ -1,7 +1,7 @@
 import torch
 from transformers import PreTrainedTokenizerFast
-from model import build_transformer
-from create_masks import create_encoder_mask, create_decoder_mask
+from transformer_model import build_transformer
+from attention_masks import create_encoder_mask, create_decoder_mask
 import os
 
 # ----------------------------

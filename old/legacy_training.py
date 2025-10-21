@@ -3,9 +3,9 @@ from torch.utils.data import DataLoader, Dataset
 import torch.nn as nn
 import math
 import os
-from tokenize_datasets import train_en, train_de, val_en, val_de, bpe_tokenizer, src_seq_len, tgt_seq_len, tokenize_sequences
-from create_masks import create_encoder_mask, create_decoder_mask
-from model import build_transformer
+from data_preprocessing import train_en, train_de, val_en, val_de, bpe_tokenizer, src_seq_len, tgt_seq_len, tokenize_sequences
+from attention_masks import create_encoder_mask, create_decoder_mask
+from transformer_model import build_transformer
 
 print("Starting file")
 class BilingualDataset(Dataset):

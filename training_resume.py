@@ -1,3 +1,30 @@
+"""
+Training Resume Script
+====================
+
+This script allows resuming training from a saved checkpoint.
+It extends the distributed training functionality with checkpoint
+loading and resumption capabilities.
+
+Key features:
+- Resume training from any saved checkpoint
+- Support for both old and new checkpoint formats
+- Complete state restoration (model, optimizer, scaler, step)
+- Backward compatibility with older checkpoint formats
+- All features from distributed_training.py
+
+Usage:
+    python training_resume.py
+
+Requirements:
+    - Multiple CUDA GPUs
+    - Pre-trained tokenizer (bpe_tokenizer.json)
+    - Dataset files in datasets/ directory
+    - Existing checkpoint files in checkpoints/ directory
+
+Author: Implementation for Transformer training pipeline
+"""
+
 import torch
 import torch.nn as nn
 import torch.multiprocessing as mp
@@ -5,18 +32,18 @@ import torch.distributed as dist
 from torch.utils.data import DataLoader, Dataset, distributed
 import math
 import os
-from tokenize_datasets import train_en, train_de, val_en, val_de, bpe_tokenizer, src_seq_len, tgt_seq_len, tokenize_sequences, load_and_prepare_data
-from create_masks import create_encoder_mask, create_decoder_mask
-from model import build_transformer
-# The GradScaler and autocast APIs were moved to torch.amp directly
+from data_preprocessing import train_en, train_de, val_en, val_de, bpe_tokenizer, src_seq_len, tgt_seq_len, tokenize_sequences, load_and_prepare_data
+from attention_masks import create_encoder_mask, create_decoder_mask
+from transformer_model import build_transformer
+# Updated autocast API
 import torch.amp 
 
-print("Starting file")
+print("Starting training resume script")
 
 import torch
 from torch.utils.data import Dataset
-# Make sure you import create_encoder_mask and create_decoder_mask
-from create_masks import create_encoder_mask, create_decoder_mask
+# Import attention mask functions
+from attention_masks import create_encoder_mask, create_decoder_mask
 
 class BilingualDataset(Dataset):
     def __init__(self, src_lines, tgt_lines, tokenizer, src_max_len, tgt_max_len):

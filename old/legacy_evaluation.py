@@ -1,8 +1,8 @@
 import torch
 from transformers import PreTrainedTokenizerFast
 import sacrebleu
-from model import build_transformer # assuming this is where your model architecture is defined
-from create_masks import create_encoder_mask, create_decoder_mask # assuming these are defined
+from transformer_model import build_transformer # assuming this is where your model architecture is defined
+from attention_masks import create_encoder_mask, create_decoder_mask # assuming these are defined
 
 # ----------------------------
 # 1. Setup
